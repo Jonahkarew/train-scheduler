@@ -1,16 +1,16 @@
-src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"
+src = "https://www.gstatic.com/firebasejs/5.9.3/firebase.js"
 // reference firebase
-  var config = {
-    apiKey: "AIzaSyDQeKzmFdtKMsp3DOZx9xMGliMtkbxbwkE",
-    authDomain: "train-scheduler-cba36.firebaseapp.com",
-    databaseURL: "https://train-scheduler-cba36.firebaseio.com",
-    projectId: "train-scheduler-cba36",
-    storageBucket: "train-scheduler-cba36.appspot.com",
-    messagingSenderId: "269597108300"
-  };
-  
-  // Initialize Firebase
-  firebase.initializeApp(config);
+var config = {
+  apiKey: "AIzaSyDQeKzmFdtKMsp3DOZx9xMGliMtkbxbwkE",
+  authDomain: "train-scheduler-cba36.firebaseapp.com",
+  databaseURL: "https://train-scheduler-cba36.firebaseio.com",
+  projectId: "train-scheduler-cba36",
+  storageBucket: "train-scheduler-cba36.appspot.com",
+  messagingSenderId: "269597108300"
+};
+
+// Initialize Firebase
+firebase.initializeApp(config);
 
 
 
@@ -32,18 +32,18 @@ $("#train-form").on("submit", function (event) {
 
 
 // add event listener for added child
-database.ref().on("child_added", function(childSnapshot){
+database.ref().on("child_added", function (childSnapshot) {
 
   var trainData = childSnapshot.val();
 
-//convert first time to military time in moment
+  //convert first time to military time in moment
   var firstTimeConverted = moment(trainData.firstTime, "HHmm").subtract(1, "years");
   console.log(firstTimeConverted);
 
 
   //get current military time
   var currentTime = moment();
-  console.log("CURRENT TIME: " +moment(currentTime).format("HHmm"));
+  console.log("CURRENT TIME: " + moment(currentTime).format("HHmm"));
 
   // get difference between times
   var timeDifference = moment().diff(moment(firstTimeConverted), "minutes");
@@ -57,8 +57,12 @@ database.ref().on("child_added", function(childSnapshot){
   var minutesUntilNextTrain = trainData.frequency - tRemainder;
   console.log(minutesUntilNextTrain);
 
-  
 
+  // next train will be arriving:
+  var nextArrival = moment().add(minutesUntilNextTrain, "minutes");
+  console.log(moment(nextArrival).format("HHmm"))
+  var trainNextArrival = moment(nextArrival).format("HH:mm");
+  console.log(trainNextArrival)
 
 
   //create table row
@@ -70,7 +74,7 @@ database.ref().on("child_added", function(childSnapshot){
 
   var trainFrequencyTd = $('<td>');
 
- 
+
 
   var trainNextArrivalTd = $('<td>');
 
@@ -80,11 +84,12 @@ database.ref().on("child_added", function(childSnapshot){
   // add data from childsnapshot val to td's
   trainNameTd.text(trainData.name);
   trainDestinationTd.text(trainData.destination);
-  trainMinutesAwayTd.text(minutesUntilNextTrain);
   trainFrequencyTd.text(trainData.frequency);
+  trainNextArrivalTd.text(trainNextArrival)
+  trainMinutesAwayTd.text(minutesUntilNextTrain);
 
   // add td's to row
-  $tr.append(trainNameTd, trainDestinationTd, trainFrequencyTd, trainMinutesAwayTd)
+  $tr.append(trainNameTd, trainDestinationTd, trainFrequencyTd, trainNextArrivalTd, trainMinutesAwayTd)
 
   // stick the row to the table
   $("#tableBody").append($tr)
