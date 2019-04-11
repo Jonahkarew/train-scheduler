@@ -28,6 +28,10 @@ $("#train-form").on("submit", function (event) {
     frequency: $("#frequency-input").val().trim()
   }
   database.ref().push(trainInputData);
+  $("#train-name-input").val("");
+  $("#destination-input").val("");
+  $("#first-train-time").val("");
+  $("#frequency-input").val("");
 })
 
 
@@ -94,3 +98,11 @@ database.ref().on("child_added", function (childSnapshot) {
   // stick the row to the table
   $("#tableBody").append($tr)
 })
+
+// function updateTime(){
+  
+// }
+
+// setInterval(function(){
+//   updateTime();
+// },60000)

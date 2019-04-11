@@ -1,11 +1,27 @@
 body{
   text-align: center;
+  background:#FFC645;
+  font-family: 'Raleway', sans-serif;
 }
 form{
   text-align: left;
 }
 
+
+.form-group{
+  padding: 0.5em 0.5em 0 0.5em;
+}
+
+#buttonDiv{
+  text-align: center;
+}
+
 button:hover{
   background-color: ivory;
   transition: 0.5s;
+}
+
+#tableDiv{
+  overflow-x: auto;
+  padding: 1.25rem 0 0 0;
 }
