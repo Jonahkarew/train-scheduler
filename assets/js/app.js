@@ -36,12 +36,28 @@ database.ref().on("child_added", function(childSnapshot){
 
   var trainData = childSnapshot.val();
 
+//convert first time to military time in moment
+  var firstTimeConverted = moment(trainData.firstTime, "HHmm").subtract(1, "years");
+  console.log(firstTimeConverted);
 
 
+  //get current military time
+  var currentTime = moment();
+  console.log("CURRENT TIME: " +moment(currentTime).format("HHmm"));
 
+  // get difference between times
+  var timeDifference = moment().diff(moment(firstTimeConverted), "minutes");
+  console.log("difference in time: " + timeDifference);
+
+  // remainder of time apart
+  var tRemainder = timeDifference % trainData.frequency;
+  console.log(tRemainder);
+
+  // how many minutes until next train
+  var minutesUntilNextTrain = trainData.frequency - tRemainder;
+  console.log(minutesUntilNextTrain);
 
   
-
 
 
 
@@ -54,19 +70,21 @@ database.ref().on("child_added", function(childSnapshot){
 
   var trainFrequencyTd = $('<td>');
 
-  var trainFirstTimeTd = $('<td>');
+ 
 
-  var trainNextArrival = $('<td>');
+  var trainNextArrivalTd = $('<td>');
+
+  var trainMinutesAwayTd = $('<td>');
 
 
   // add data from childsnapshot val to td's
   trainNameTd.text(trainData.name);
   trainDestinationTd.text(trainData.destination);
-  trainFirstTimeTd.text(trainData.firstTime);
+  trainMinutesAwayTd.text(minutesUntilNextTrain);
   trainFrequencyTd.text(trainData.frequency);
 
   // add td's to row
-  $tr.append(trainNameTd, trainDestinationTd, trainFrequencyTd)
+  $tr.append(trainNameTd, trainDestinationTd, trainFrequencyTd, trainMinutesAwayTd)
 
   // stick the row to the table
   $("#tableBody").append($tr)
