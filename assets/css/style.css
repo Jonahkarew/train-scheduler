@@ -1,0 +1,11 @@
+body{
+  text-align: center;
+}
+form{
+  text-align: left;
+}
+
+button:hover{
+  background-color: ivory;
+  transition: 0.5s;
+}
